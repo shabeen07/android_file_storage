@@ -19,6 +19,7 @@ void main() {
       fileName: 'fileName',
       bytes: [],
       mimeType: '',
+      subFolder: '',
     );
     // The version string depends on the host platform running the test, so
     // just assert that some non-empty string is returned.

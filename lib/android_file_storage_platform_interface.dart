@@ -19,6 +19,7 @@ abstract class AndroidFileStoragePlatform extends PlatformInterface {
     required String fileName,
     required List<int> bytes,
     required String mimeType,
+    String? subFolder, // New parameter
   }) {
     throw UnimplementedError('saveFile() has not been implemented.');
   }

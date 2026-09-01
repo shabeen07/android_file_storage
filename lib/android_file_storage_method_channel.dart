@@ -12,6 +12,7 @@ class MethodChannelAndroidFileStorage extends AndroidFileStoragePlatform {
     required String fileName,
     required List<int> bytes,
     required String mimeType,
+    String? subFolder,
   }) async {
     final String? uriResult = await methodChannel.invokeMethod<String>(
       'saveFile',
@@ -19,6 +20,7 @@ class MethodChannelAndroidFileStorage extends AndroidFileStoragePlatform {
         'fileName': fileName,
         'bytes': Uint8List.fromList(bytes),
         'mimeType': mimeType,
+        'subFolder': subFolder,
       },
     );
     return uriResult;

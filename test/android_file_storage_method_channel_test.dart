@@ -26,6 +26,7 @@ void main() {
         fileName: "test.txt",
         bytes: [42],
         mimeType: "text/plain",
+        subFolder: "test",
       ),
       'Downloaded',
     );
