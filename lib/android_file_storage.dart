@@ -5,11 +5,13 @@ class AndroidFileStorage {
     required String fileName,
     required List<int> bytes,
     required String mimeType,
+    String? subFolder, // New parameter
   }) {
     return AndroidFileStoragePlatform.instance.saveFile(
       fileName: fileName,
       bytes: bytes,
       mimeType: mimeType,
+      subFolder: subFolder,
     );
   }
 }

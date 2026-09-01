@@ -12,8 +12,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-class AndroidFileStoragePlugin: FlutterPlugin, MethodCallHandler {
-    private lateinit var channel : MethodChannel
+class AndroidFileStoragePlugin : FlutterPlugin, MethodCallHandler {
+    private lateinit var channel: MethodChannel
     private lateinit var context: Context
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -27,13 +27,14 @@ class AndroidFileStoragePlugin: FlutterPlugin, MethodCallHandler {
             val fileName = call.argument<String>("fileName")
             val bytes = call.argument<ByteArray>("bytes")
             val mimeType = call.argument<String>("mimeType")
+            val subFolder = call.argument<String>("subFolder")
 
             if (fileName == null || bytes == null || mimeType == null) {
                 result.error("INVALID_ARGUMENTS", "Arguments cannot be null", null)
                 return
             }
 
-            val savedUri = saveToDownloads(context, fileName, bytes, mimeType)
+            val savedUri = saveToDownloads(context, fileName, bytes, mimeType, subFolder)
             if (savedUri != null) {
                 result.success(savedUri.toString())
             } else {
@@ -44,13 +45,27 @@ class AndroidFileStoragePlugin: FlutterPlugin, MethodCallHandler {
         }
     }
 
-    private fun saveToDownloads(context: Context, fileName: String, bytes: ByteArray, mimeType: String): Uri? {
+    private fun saveToDownloads(
+        context: Context,
+        fileName: String,
+        bytes: ByteArray,
+        mimeType: String,
+        subFolder: String? = null
+    ): Uri? {
         val resolver = context.contentResolver
+
+        // Build target relative path dynamically (e.g., Download or Download/MyApp)
+        val relativePath = if (!subFolder.isNullOrBlank()) {
+            "${Environment.DIRECTORY_DOWNLOADS}/$subFolder"
+        } else {
+            Environment.DIRECTORY_DOWNLOADS
+        }
+
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath)
                 put(MediaStore.MediaColumns.IS_PENDING, 1)
             }
         }

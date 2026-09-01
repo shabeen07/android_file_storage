@@ -12,6 +12,7 @@ class MockAndroidFileStoragePlatform
     required String fileName,
     required List<int> bytes,
     required String mimeType,
+    String? subFolder,
   }) {
     return Future.value("Downloaded");
   }
@@ -36,6 +37,7 @@ void main() {
         fileName: "test.txt",
         bytes: [42],
         mimeType: "text/plain",
+        subFolder: "test",
       ),
       "Downloaded",
     );
