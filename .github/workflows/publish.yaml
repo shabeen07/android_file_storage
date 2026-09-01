@@ -7,8 +7,25 @@ on:
 
 jobs:
   publish:
+    runs-on: ubuntu-latest
     permissions:
-      id-token: write # Required for authentication using OIDC
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-    # with:
-    #   working-directory: path/to/package/within/repository
+      id-token: write # Critical: Allows GitHub to issue OIDC token to pub.dev
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Dart/Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Set up Dart Environment
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Publish Package
+        run: dart pub publish --force
