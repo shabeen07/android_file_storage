@@ -1,0 +1,21 @@
+name: Publish to pub.dev
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Mandatory for OIDC authentication
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Dart / Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Publish Package
+        uses: dart-lang/setup-dart/config-pub-release@v1
