@@ -1,6 +1,6 @@
 name: android_file_storage
 description: "A modern Flutter plugin to save files directly to Android Downloads directory using MediaStore API without extra runtime permissions."
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/shabeen07/android_file_storage
 repository: https://github.com/shabeen07/android_file_storage
 
